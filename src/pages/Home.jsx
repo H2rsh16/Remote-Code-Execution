@@ -22,7 +22,7 @@ const Home = () =>{
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get('https://rce-system-backend.onrender.com/profile', {
+                const response = await axios.get('https://rce-system-backend.onrender.com/register/profile', {
                     withCredentials: true
                 });
 
