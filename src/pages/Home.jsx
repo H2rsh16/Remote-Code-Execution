@@ -26,11 +26,9 @@ const Home = () =>{
                     withCredentials: true
                 });
 
-                // Check if the response is valid
                 if (response.data) {
                     setUser(response.data.data["name"]);
 
-                    // Show success toast only once
                     toast.success(response.data.message, {
                         position: "top-center",
                         autoClose: 2000,
@@ -59,7 +57,7 @@ const Home = () =>{
         };
 
         fetchProfile();
-    }, []); // Empty dependency array ensures this runs only once
+    }, []);
     
 
     const onMount = (editor) => {
@@ -91,9 +89,6 @@ const Home = () =>{
                 });
 
                 setTimeout(()=>{
-                    localStorage.removeItem('username');
-                    localStorage.removeItem('password');
-                    localStorage.removeItem('rememberMe');
                     logout();
                     navigate('/')
                 }, 2500);

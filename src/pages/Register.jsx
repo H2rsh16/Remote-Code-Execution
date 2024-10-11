@@ -19,7 +19,7 @@ const Register = ()=>{
                 email: email,
                 password: password
             }, {
-                withCredentials: true // Include credentials (cookies) in requests
+                withCredentials: true
             }).then((response) => {
                 toast.success(response.data.message, {
                     position: "top-center",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./pages/Home"
 import Register from "./pages/Register";
@@ -12,9 +12,8 @@ const App = () =>{
 
     return (
         <AuthProvider>
-            <Router>
+            <BrowserRouter basename="/Remote-Code-Execution">
                 <ToastContainer/>
-                <Routes>
                     <Route path="/" element={<Login />} />
                     <Route path="*" element={<Navigate to="/" />} />
                     <Route path="/register" element={<Register />} />
@@ -26,8 +25,7 @@ const App = () =>{
                             </ProtectedRoute>
                         }
                     />
-                </Routes>
-            </Router>
+            </BrowserRouter>
         </AuthProvider>
     )
 }
