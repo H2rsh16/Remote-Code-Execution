@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react"
 import axios from 'axios';
 import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useAuth } from "./AuthContex";
+import Home from "./Home";
 
 const Login = () =>{
     const [username, setUsername] = useState("");
@@ -20,7 +21,7 @@ const Login = () =>{
                 password: password
             }, {
                 withCredentials: true
-            });
+            })
             
             toast.success(response.data.message, {
                 position: "top-center",
@@ -52,6 +53,10 @@ const Login = () =>{
         }
 
     }
+
+    const redirectToRegister = () => {
+        navigate('/register')
+    }
     
 
     return (
@@ -70,7 +75,7 @@ const Login = () =>{
                             <input type="password" id="password" onInput={(e)=> setPassword(e.currentTarget.value)} className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your password" required />
                         </div>
                         <div className="flex items-center justify-between mb-4">
-                            <a href="register" className="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Create Account</a>
+                            <a href="" onClick={redirectToRegister} className="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Create Account</a>
                         </div>
                         <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Login</button>
                     </form>

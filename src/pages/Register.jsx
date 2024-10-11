@@ -3,17 +3,34 @@ import axios from 'axios'
 import { ToastContainer, toast, Bounce, toggle } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
+
 
 const Register = ()=>{
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmpassword, setConfirmPassword] = useState("");
 
     const navigate = useNavigate();
 
     const Register = async (e) => {
         e.preventDefault();
+        if (password !== confirmpassword) {
+            toast.error("Password Not Matched", {
+                position: "top-center",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+                theme: "dark",
+                transition: Bounce,
+            });
+        }
+        else{
             const response = await axios.post('https://rce-system-backend.onrender.com/register', {
                 name: name,
                 email: email,
@@ -46,10 +63,15 @@ const Register = ()=>{
                 });
             }).finally(()=>{
                 setTimeout(()=>{
-                    navigate('/')
+                    redirectToLogin();
                 },2500)
             })
+        }
     };
+
+    const redirectToLogin = () =>{
+        navigate('/');
+    }
 
     return (
         <section className="bg-gray-100">
@@ -73,10 +95,10 @@ const Register = ()=>{
                         </div>
                         <div className="mb-4">
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirm Password</label>
-                            <input type="password" id="password" className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your password" required />
+                            <input type="password" id="cpassword" onInput={(e)=>{setConfirmPassword(e.currentTarget.value)}} className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter your password" required />
                         </div>
                         <div className="flex items-center justify-between mb-4">
-                            <a href="/" className="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">I have Account</a>
+                            <a onClick={redirectToLogin} href="" className="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">I have Account</a>
                         </div>
                         <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Submit</button>
                     </form>

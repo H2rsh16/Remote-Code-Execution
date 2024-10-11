@@ -7,7 +7,7 @@ import Input from "./Input";
 import { ToastContainer, toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Profile from './Imgs/Dp.png'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
 import axios from "axios";
 import { useAuth } from "./AuthContex";
 
@@ -22,11 +22,10 @@ const Home = () =>{
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get('https://rce-system-backend.onrender.com/register/profile', {
+                const response = await axios.get('https://rce-system-backend.onrender.com/profile', {
                     withCredentials: true
                 });
 
-                if (response.data) {
                     setUser(response.data.data["name"]);
 
                     toast.success(response.data.message, {
@@ -40,7 +39,6 @@ const Home = () =>{
                         theme: "dark",
                         transition: Bounce,
                     });
-                }
             } catch (error) {
                 toast.error(error.response?.data?.message || "Error try Again!!", {
                     position: "top-center",
@@ -90,7 +88,7 @@ const Home = () =>{
 
                 setTimeout(()=>{
                     logout();
-                    navigate('/')
+                    redirectToLogin();
                 }, 2500);
             }).catch((error)=>{
                 toast.error(error.response.data.message || "Error try Again!!", {
@@ -106,6 +104,10 @@ const Home = () =>{
                 });
             })
         
+    }
+
+    const redirectToLogin = () => {
+        navigate('/');
     }
 
     const exportFile = (event) => {
