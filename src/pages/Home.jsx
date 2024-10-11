@@ -1,180 +1,139 @@
-import React, { useRef, useState, useEffect, version } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Editor from '@monaco-editor/react';
 import LanguageSelector from "./LanguageSelector";
-import { Code_Snipets, extensions, languages_ver } from "./data";
+import { Code_Snipets, extensions } from "./data";
 import Output from "./Output";
 import Input from "./Input";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster, toast } from 'react-hot-toast';
 import Profile from './Imgs/Dp.png'
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { useAuth } from "./AuthContex";
 
 const Home = () =>{
-    const editorRef = useRef()
-    const [value, setValue] = useState("")
-    const [user, setUser] = useState("")
-    const [language, setLanguage] = useState("java")
+    const editorRef = useRef("");
+    const [value, setValue] = useState("");
+    const [user, setUser] = useState("");
+    const [language, setLanguage] = useState("java");
     const navigate = useNavigate();
     const { logout } = useAuth();
-    
+
     useEffect(() => {
-        const fetchProfile = async () => {
-            try {
-                const response = await axios.get('https://rce-system-backend.onrender.com/profile', {
-                    withCredentials: true
-                });
-
-                    setUser(response.data.data["name"]);
-
-                    toast.success(response.data.message, {
-                        position: "top-center",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: false,
-                        pauseOnHover: false,
-                        draggable: false,
-                        progress: undefined,
-                        theme: "dark",
-                        transition: Bounce,
-                    });
-            } catch (error) {
-                toast.error(error.response?.data?.message || "Error try Again!!", {
-                    position: "top-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "dark",
-                    transition: Bounce,
-                });
-            }
-        };
-
         fetchProfile();
-    }, []);
-    
+    });
 
+
+    const notifySuccessToast = (res) => {
+        toast.success(res.data.message, {
+            position: 'top-center',
+            duration: 3000,
+            style: {
+                background: '#333',
+                color: '#fff',
+            },
+        });
+    };
+    
+    const notifyErrorToast = (err) => {
+        toast.error(err.response?.data?.message || "Error try Again!!", {
+            position: 'top-center',
+            duration: 3000,
+            style: {
+                background: '#e74c3c',
+                color: '#fff',
+            },
+        });
+    };
+
+    
+    const fetchProfile = async () => {
+        await axios.get('https://rce-system-backend.onrender.com/profile', { withCredentials: true })
+        .then((response) => {
+                if (response.data && response.data.data) {
+                    setUser(response.data.data.name);
+                }
+            }
+        ).catch((error) => {
+            notifyErrorToast(error)
+            setTimeout(() => {
+                logout();
+                navigate('/');
+            }, 2500);
+        })
+
+
+
+    };
     const onMount = (editor) => {
         editorRef.current = editor;
         editor.focus();
-    }
+    };
 
     const onSelect = (language) => {
-        setLanguage(language)
-        setValue(
-            Code_Snipets[language]
-        )
-    }
+        setLanguage(language);
+        setValue(Code_Snipets[language]);
+    };
 
     const LogOut = async () => {
-            const response = await axios.post('https://rce-system-backend.onrender.com/logout',{}, {
-                withCredentials: true
-            }).then((response)=>{
-                toast.success(response.data.message, {
-                    position: "top-center",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "dark",
-                    transition: Bounce,
-                });
-
-                setTimeout(()=>{
-                    logout();
-                    redirectToLogin();
-                }, 2500);
-            }).catch((error)=>{
-                toast.error(error.response.data.message || "Error try Again!!", {
-                    position: "top-center",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: false,
-                    progress: undefined,
-                    theme: "dark",
-                    transition: Bounce,
-                });
-            })
-        
-    }
-
-    const redirectToLogin = () => {
-        navigate('/');
-    }
-
-    const exportFile = (event) => {
-      const content = editorRef.current.getValue();
-      const blob = new Blob([content], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Code.' + extensions[language];
-
-      document.body.appendChild(a);
-      a.click();
-
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+        try {
+            const response = await axios.post('https://rce-system-backend.onrender.com/logout', {}, { withCredentials: true });
+            notifySuccessToast(response)
+            setTimeout(() => {
+                logout();
+                navigate('/');
+            }, 2500);
+        } catch (error) {
+            notifyErrorToast(error)
+        }
     };
-    
+
+    const exportFile = () => {
+        const content = editorRef.current.getValue();
+        const blob = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Code.' + extensions[language];
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
     const importFile = (event) => {
         const file = event.target.files[0];
 
         if (file) {
             const ext = file.name.split('.').pop();
-            
-            if(extensions[ext] != language || !(ext in extensions)){
+            if (!(ext in extensions) || extensions[ext] !== language) {
                 toast.error("Invalid File !!", {
                     position: "top-center",
                     autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: false,
-                    draggable: false,
-                    progress: undefined,
                     theme: "dark",
-                    transition: Bounce,
                 });
-            }
-            else{
+            } else {
                 const reader = new FileReader();
-    
                 reader.onload = (e) => {
                     const content = e.target.result;
-                    setValue(content)
+                    setValue(content);
                 };
-    
                 reader.readAsText(file);
             }
         } else {
             toast.error("File Import Error!!", {
                 position: "top-center",
                 autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: false,
-                progress: undefined,
                 theme: "dark",
-                transition: Bounce,
             });
         }
     };
 
     return (
-        <>
         <section className="relative px-3 py-5 bg-zinc-900 flex lg:flex-row gap-4 h-fit w-fit md:w-screen lg:h-screen xl:h-screen lg:w-screen xl:w-screen sm:flex-col md:flex-col">
             <div className="absolute flex justify-center items-center right-10 flex gap-x-1.5 px-5">
-                <img src={Profile} className="w-9 h-9 rounded-full"/>
+                <img alt="profilePic" src={Profile} className="w-9 h-9 rounded-full"/>
                 <span className="text-sm text-gray-300 font-bold">{user}</span>
                 <button onClick={LogOut} className="rounded-md bg-gray px-3 py-2 text-sm font-semibold text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-zinc-800 cursor-pointer">Log Out</button>
             </div>
@@ -216,8 +175,8 @@ const Home = () =>{
                 <Output editorRef={editorRef} language={language}/>
                 <Input/>
             </div>
+            <Toaster />
         </section>
-        </>
     )
 }
 

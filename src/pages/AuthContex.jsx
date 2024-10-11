@@ -5,9 +5,13 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
-        // Check local storage for authentication status on initial load
         return localStorage.getItem('isAuthenticated') === 'true';
     });
+
+    useEffect(() => {
+        localStorage.setItem('isAuthenticated', isAuthenticated.toString());
+    }, [isAuthenticated]);
+
 
     const login = () => {
         setIsAuthenticated(true);
@@ -26,4 +30,4 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = ()  => useContext(AuthContext)

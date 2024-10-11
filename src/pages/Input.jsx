@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 
 let globalString = '';
@@ -32,20 +30,17 @@ const Input = () => {
             };    
             reader.readAsText(f);
         } else {
-            toast.error("File Import Error!!", {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: false,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            });
-
-            console.log("Error");
-            
+            // toast.error("File Import Error!!", {
+            //     position: "top-center",
+            //     autoClose: 5000,
+            //     hideProgressBar: false,
+            //     closeOnClick: false,
+            //     pauseOnHover: false,
+            //     draggable: false,
+            //     progress: undefined,
+            //     theme: "dark",
+            //     transition: Bounce,
+            // });            
         }
     }
 
@@ -56,7 +51,7 @@ const Input = () => {
             <div className="h-60 flex flex-col mt-2">
                 <div className="flex flex-row w-full py-3 px-2">
                     <span className="flex w-1/2">
-                        <span className="rounded-md bg-gray px-3 py-2 text-sm font-semibold text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300">Input-</span>
+                        <span className="rounded-md bg-gray px-3 py-2 text-sm font-semibold text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300">Input</span>
                     </span>
                     <div className="flex gap-x-1.5">
                         <input type="file" id="import" onInput={exportInput} className="invisible" />

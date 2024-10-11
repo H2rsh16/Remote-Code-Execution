@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import executeCode from "./Api";
-import { ToastContainer, toast, Bounce } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 
 const Output = ({editorRef, language}) => {
@@ -24,17 +22,17 @@ const Output = ({editorRef, language}) => {
         }
         catch(error){
             setOutput(error.message)
-            toast.error(error.message, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: false,
-                draggable: false,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            });
+            // toast.error(error.message, {
+            //     position: "top-center",
+            //     autoClose: 5000,
+            //     hideProgressBar: false,
+            //     closeOnClick: false,
+            //     pauseOnHover: false,
+            //     draggable: false,
+            //     progress: undefined,
+            //     theme: "dark",
+            //     transition: Bounce,
+            // });
         }
         finally{
             setLoading(false)
@@ -52,7 +50,7 @@ const exportCode = (event) => {
         
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'Output.' +"txt";
+        a.download = "Output.txt";
     
         document.body.appendChild(a);
         a.click();
@@ -61,17 +59,17 @@ const exportCode = (event) => {
         URL.revokeObjectURL(url);
     }
     else{
-        toast.error("Run Code first!!", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: false,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-            theme: "dark",
-            transition: Bounce,
-        });
+        // toast.error("Run Code first!!", {
+        //     position: "top-center",
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: false,
+        //     pauseOnHover: false,
+        //     draggable: false,
+        //     progress: undefined,
+        //     theme: "dark",
+        //     transition: Bounce,
+        // });
     }
 };
 
@@ -120,7 +118,6 @@ const exportCode = (event) => {
                 </div>
             }
         
-            <ToastContainer/>
         </>
     )
 }

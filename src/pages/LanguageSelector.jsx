@@ -3,6 +3,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { languages_ver } from "./data"
 
+
 const languages = Object.entries(languages_ver)
 
 const LanguageSelector = ({language, onSelect}) => {
@@ -25,15 +26,14 @@ const LanguageSelector = ({language, onSelect}) => {
                         languages.map(([language, version])=> (
                             
                             <MenuItem key={language}>
-                                <a
-                                href="#"
+                                <span
                                 onClick={() => {onSelect(language)}}
                                 className="block px-4 py-2 text-sm text-gray-300 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
                                 >
                                 {language}
                                 &nbsp;
                                 ({version})
-                                </a>
+                                </span>
                             </MenuItem>
                         ))
                     }
@@ -45,4 +45,4 @@ const LanguageSelector = ({language, onSelect}) => {
     )
 }
 
-export default LanguageSelector
+export default LanguageSelector;
