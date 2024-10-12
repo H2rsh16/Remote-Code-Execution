@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/Remote-Code-Execution/static/css/main.1fae4756.css",
+    "main.js": "/Remote-Code-Execution/static/js/main.add760e4.js",
+    "static/media/Dp.png": "/Remote-Code-Execution/static/media/Dp.afe07f57979e2bba2183.png",
+    "index.html": "/Remote-Code-Execution/index.html",
+    "main.1fae4756.css.map": "/Remote-Code-Execution/static/css/main.1fae4756.css.map",
+    "main.add760e4.js.map": "/Remote-Code-Execution/static/js/main.add760e4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1fae4756.css",
+    "static/js/main.add760e4.js"
+  ]
+}

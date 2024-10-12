@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import executeCode from "./Api";
+import toast, { Toaster } from "react-hot-toast";
 
 
 const Output = ({editorRef, language}) => {
@@ -22,17 +23,6 @@ const Output = ({editorRef, language}) => {
         }
         catch(error){
             setOutput(error.message)
-            // toast.error(error.message, {
-            //     position: "top-center",
-            //     autoClose: 5000,
-            //     hideProgressBar: false,
-            //     closeOnClick: false,
-            //     pauseOnHover: false,
-            //     draggable: false,
-            //     progress: undefined,
-            //     theme: "dark",
-            //     transition: Bounce,
-            // });
         }
         finally{
             setLoading(false)
@@ -41,9 +31,17 @@ const Output = ({editorRef, language}) => {
 
 const exportCode = (event) => {
     const content = output;
-
-    
-    if(content){
+    if(!content){
+        toast.error("Run Code First", {
+            position: 'top-center',
+            duration: 3000,
+            style: {
+                background: '#e74c3c',
+                color: '#fff',
+            },
+        });
+    }
+    else{
         const result = `\ncode : "\n${editorRef.current.getValue()}\n",\noutput:  "\n\t${content}\n"`;
         const blob = new Blob([result], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
@@ -57,19 +55,6 @@ const exportCode = (event) => {
     
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    }
-    else{
-        // toast.error("Run Code first!!", {
-        //     position: "top-center",
-        //     autoClose: 5000,
-        //     hideProgressBar: false,
-        //     closeOnClick: false,
-        //     pauseOnHover: false,
-        //     draggable: false,
-        //     progress: undefined,
-        //     theme: "dark",
-        //     transition: Bounce,
-        // });
     }
 };
 
@@ -117,6 +102,8 @@ const exportCode = (event) => {
                     }
                 </div>
             }
+
+            <Toaster />
         
         </>
     )

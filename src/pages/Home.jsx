@@ -108,10 +108,13 @@ const Home = () =>{
         if (file) {
             const ext = file.name.split('.').pop();
             if (!(ext in extensions) || extensions[ext] !== language) {
-                toast.error("Invalid File !!", {
-                    position: "top-center",
-                    autoClose: 5000,
-                    theme: "dark",
+                toast.error("Invalid File", {
+                    position: 'top-center',
+                    duration: 3000,
+                    style: {
+                        background: '#e74c3c',
+                        color: '#fff',
+                    },
                 });
             } else {
                 const reader = new FileReader();
@@ -122,11 +125,16 @@ const Home = () =>{
                 reader.readAsText(file);
             }
         } else {
-            toast.error("File Import Error!!", {
-                position: "top-center",
-                autoClose: 5000,
-                theme: "dark",
+            toast.error("File Not Import!!", {
+                position: 'top-center',
+                duration: 3000,
+                style: {
+                    background: '#e74c3c',
+                    color: '#fff',
+                },
             });
+
+            notifyErrorToast("")
         }
     };
 
