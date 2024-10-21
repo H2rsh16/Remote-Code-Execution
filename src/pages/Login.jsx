@@ -50,7 +50,6 @@ const Login = () =>{
         } catch (error) {
             notifyErrorToast(error)
         }
-
     }
 
     const redirectToRegister = () => {

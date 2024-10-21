@@ -94,7 +94,7 @@ const Register = ()=>{
                     <form action="" onSubmit={Register}>
                         <div className="mb-4">
                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Enter Name</label>
-                            <input type="name" onInput={handleName} id="name" className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="your@email.com" required />
+                            <input type="text" onInput={handleName} id="name" className="shadow-sm rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="your name" required />
                         </div>
                         <div className="mb-4">
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
